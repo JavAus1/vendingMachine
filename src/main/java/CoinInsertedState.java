@@ -34,9 +34,9 @@ public class CoinInsertedState implements State {
     }
 
     private boolean isProductAvailable(String productCode) {
-        List<Product> products = vendingMachine.getAvailableProductBank().getAvailableProducts().get(productCode);
-        if (products != null && products.size() > 0)
+        Product product = vendingMachine.getProduct(productCode);
+        if (product != null)
             return true;
-        throw new ProductUnAvailableException("Product Out of Stock..Please Choose another Product");
+        return false;
     }
 }

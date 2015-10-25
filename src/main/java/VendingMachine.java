@@ -1,5 +1,3 @@
-import lombok.Getter;
-
 import java.util.List;
 
 public class VendingMachine {
@@ -16,11 +14,22 @@ public class VendingMachine {
     }
 
     public Product getProduct(String productCode) {
-        List<Product> products = availableProductBank.getAvailableProducts().get(productCode);
-        if (products.isEmpty()) {
-            throw new ProductUnAvailableException("Product Out of stock");
+        if (checkIfInventoryExists()) {
+            List<Product> products = availableProductBank.getAvailableProducts().get(productCode);
+            if (isProductOutOfStock(products)) {
+                throw new ProductUnAvailableException("Product Out of stock");
+            }
+            return products.get(products.size() - 1);
         }
-        return products.get(products.size() - 1);
+        throw new MachineException("No products Present...Please come back later");
+    }
+
+    private boolean isProductOutOfStock(List<Product> products) {
+        return products.isEmpty();
+    }
+
+    private boolean checkIfInventoryExists() {
+        return availableProductBank.getAvailableProducts() != null;
     }
 
     public void setAvailableProductBank(AvailableProductBank availableProductBank) {
@@ -29,10 +38,6 @@ public class VendingMachine {
 
     public void setMachineState(State machineState) {
         this.machineState = machineState;
-    }
-
-    public State getMachineState() {
-        return machineState;
     }
 
     public State getNoCoinInsertedState() {

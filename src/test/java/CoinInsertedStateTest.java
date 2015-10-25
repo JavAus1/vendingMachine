@@ -91,34 +91,4 @@ public class CoinInsertedStateTest {
 
         verify(mockVendingMachine, times(0)).setMachineState(Matchers.<DispenseState>anyObject());
     }
-
-
-    @Test
-    public void throwsExceptionWhenProductIsOutOfStock() throws Exception {
-        Map<String, List<Product>> inventory = new HashMap<String, List<Product>>();
-        when(mockVendingMachine.getTotalInsertedAmount()).thenReturn(0.6);
-        when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
-        when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
-        thrown.expect(ProductUnAvailableException.class);
-        thrown.expectMessage("Product Out of Stock..Please Choose another Product");
-
-        coinInsertedState.pressDispenseButton("A1");
-    }
-
-    @Test
-    public void doesNotChangeStateWhenProductIsOutOfStock() throws Exception {
-        Map<String, List<Product>> inventory = new HashMap<String, List<Product>>();
-        when(mockVendingMachine.getTotalInsertedAmount()).thenReturn(0.6);
-        when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
-        when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
-        thrown.expect(ProductUnAvailableException.class);
-        thrown.expectMessage("Product Out of Stock..Please Choose another Product");
-
-        coinInsertedState.pressDispenseButton("A1");
-
-        verify(mockVendingMachine, times(0)).setMachineState(Matchers.<DispenseState>anyObject());
-    }
-
 }

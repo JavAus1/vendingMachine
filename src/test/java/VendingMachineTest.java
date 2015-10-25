@@ -3,6 +3,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -77,6 +79,17 @@ public class VendingMachineTest {
         thrown.expect(ProductUnAvailableException.class);
 
         vendingMachine.getProduct("A1").getCode();
+    }
+
+    @Test
+    public void throwsExceptionWhenNoProductInventory() throws Exception {
+        Map<String, List<Product>> availableProducts = null;
+        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(availableProducts);
+        thrown.expect(MachineException.class);
+        thrown.expectMessage("No products Present...Please come back later");
+
+        vendingMachine.getProduct("A1").getCode();
+
     }
 
     @Test
