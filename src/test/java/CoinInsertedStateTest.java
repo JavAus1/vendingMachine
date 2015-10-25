@@ -28,6 +28,8 @@ public class CoinInsertedStateTest {
     private VendingMachine mockVendingMachine;
     @Mock
     private AvailableProductBank mockAvailableProductBank;
+    @Mock
+    private CoinParser mockCoinParser;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -46,7 +48,8 @@ public class CoinInsertedStateTest {
     @Test
     public void changesMachineStateToDispenseWhenButtonIsPressed() {
         Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
-        when(mockVendingMachine.getTotalInsertedAmount()).thenReturn(1.0);
+        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
+        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(1.0);
         when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
         when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
         when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
@@ -59,10 +62,11 @@ public class CoinInsertedStateTest {
     @Test
     public void throwsExceptionWhenTryingToDispenseWithNotEnoughMoney() {
         Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
-        when(mockVendingMachine.getTotalInsertedAmount()).thenReturn(0.6);
+        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
         when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
         when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
         when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
+        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(0.6);
         thrown.expect(MachineException.class);
         thrown.expectMessage("Please insert more...0.4");
 
@@ -72,7 +76,8 @@ public class CoinInsertedStateTest {
     @Test
     public void changesStateOnlyWhenAmountInsertedIsGreaterThanOrEqualToProductPrice() throws Exception {
         Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
-        when(mockVendingMachine.getTotalInsertedAmount()).thenReturn(1.0);
+        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
+        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(1.0);
         when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
         when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
         when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
@@ -85,7 +90,8 @@ public class CoinInsertedStateTest {
     @Test
     public void doesNotChangeStateWhenTotalPriceIsLessProductPrice() throws Exception {
         Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
-        when(mockVendingMachine.getTotalInsertedAmount()).thenReturn(0.6);
+        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
+        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(0.6);
         when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
         when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
         when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);

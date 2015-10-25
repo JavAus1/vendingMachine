@@ -10,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +32,8 @@ public class VendingMachineTest {
     private AvailableProductBank mockAvailableProductBank;
     @Mock
     private State machineState;
+    @Mock
+    private CoinParser mockCoinParser;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -44,27 +48,17 @@ public class VendingMachineTest {
         vendingMachine = new VendingMachine();
         vendingMachine.setAvailableProductBank(mockAvailableProductBank);
         vendingMachine.setMachineState(machineState);
+        vendingMachine.setCoinParser(mockCoinParser);
     }
 
     @Test
-    public void acceptsSingleCoin() {
+    public void invokesCoinParser() {
         Coin coin = new Coin();
         coin.setCoinType(CoinType.DIME);
 
         vendingMachine.insertMoney(coin);
-        assertThat(vendingMachine.getTotalInsertedAmount(), is(0.1));
-    }
 
-    @Test
-    public void acceptsMultiplesCoins() {
-        Coin coin1 = new Coin();
-        coin1.setCoinType(CoinType.DIME);
-        Coin coin2 = new Coin();
-        coin2.setCoinType(CoinType.DIME);
-
-        vendingMachine.insertMoney(coin1);
-        vendingMachine.insertMoney(coin2);
-        assertThat(vendingMachine.getTotalInsertedAmount(), is(0.2));
+        verify(mockCoinParser).accept(Matchers.<Coin>anyObject());
     }
 
     @Test

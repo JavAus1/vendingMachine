@@ -25,4 +25,7 @@ public class CoinParser {
         return totalInsertedAmount;
     }
 
+    public void setTotalInsertedAmount(Double totalInsertedAmount) {
+        this.totalInsertedAmount = totalInsertedAmount;
+    }
 }

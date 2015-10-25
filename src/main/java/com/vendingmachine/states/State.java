@@ -17,7 +17,7 @@ public abstract class State {
     public abstract void pressDispenseButton(String code);
     public abstract Product dispenseProduct(String code);
     public void cancel(){
-        vendingMachine.setTotalInsertedAmount(0.0);
+        vendingMachine.getCoinParser().setTotalInsertedAmount(0.0);
         vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
 
     }

@@ -37,12 +37,6 @@ public class DispenseState extends State {
         return vendProduct;
     }
 
-    @Override
-    public void cancel() {
-        vendingMachine.setTotalInsertedAmount(0.0);
-        vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
-    }
-
     public void setDispenseMode(DispenseMode dispenseMode) {
         this.dispenseMode = dispenseMode;
     }

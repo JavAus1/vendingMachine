@@ -13,7 +13,6 @@ import java.util.List;
 @Component
 public class VendingMachine {
 
-    private double totalInsertedAmount;
     private AvailableProductBank availableProductBank;
     private State machineState = null;
     @Autowired
@@ -67,17 +66,13 @@ public class VendingMachine {
         this.machineState = machineState;
     }
 
-    public double getTotalInsertedAmount() {
-        return totalInsertedAmount;
-    }
-
     public AvailableProductBank getAvailableProductBank() {
         return availableProductBank;
     }
 
     public void insertMoney(Coin coin) {
         coinParser.accept(coin);
-        totalInsertedAmount += coin.getCoinType().getCoinValue();
+//        totalInsertedAmount += coin.getCoinType().getCoinValue();
     }
 
     public void pressButton(String code) {
@@ -97,12 +92,12 @@ public class VendingMachine {
         return dispenseState;
     }
 
-    public void setTotalInsertedAmount(double totalInsertedAmount) {
-        this.totalInsertedAmount = totalInsertedAmount;
-    }
-
     public void setCoinParser(CoinParser coinParser) {
         this.coinParser = coinParser;
+    }
+
+    public CoinParser getCoinParser() {
+        return coinParser;
     }
 }
 

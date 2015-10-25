@@ -30,14 +30,9 @@ public class CoinInsertedState extends State {
         throw new MachineException("Press Dispense Button");
     }
 
-    @Override
-    public void cancel() {
-        vendingMachine.setTotalInsertedAmount(0.0);
-        vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
-    }
-
     private boolean sufficientAmountInserted(String code) {
-        Double difference = vendingMachine.getProduct(code).getPrice() - vendingMachine.getTotalInsertedAmount();
+        Double difference = vendingMachine.getProduct(code).getPrice()
+                - vendingMachine.getCoinParser().getTotalInsertedAmount();
         if (difference <= 0) {
             return true;
 
