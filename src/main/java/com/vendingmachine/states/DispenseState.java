@@ -11,14 +11,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 @Component
-public class DispenseState implements State {
-    @Autowired
-    private VendingMachine vendingMachine;
+public class DispenseState extends State {
     @Resource(name = "fastDispenseMotor")
     private DispenseMode dispenseMode;
 
     public DispenseState(VendingMachine vendingMachine) {
-        this.vendingMachine = vendingMachine;
+        super(vendingMachine);
     }
     @Override
     public void insertMoney(Coin coin) {
@@ -37,6 +35,12 @@ public class DispenseState implements State {
         Product vendProduct = dispenseMode.dispenseSelectedProduct(products,code);
         vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
         return vendProduct;
+    }
+
+    @Override
+    public void cancel() {
+        vendingMachine.setTotalInsertedAmount(0.0);
+        vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
     }
 
     public void setDispenseMode(DispenseMode dispenseMode) {

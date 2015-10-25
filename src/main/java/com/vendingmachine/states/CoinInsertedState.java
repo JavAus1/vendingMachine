@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CoinInsertedState implements State {
-    @Autowired
-    private VendingMachine vendingMachine;
+public class CoinInsertedState extends State {
 
     public CoinInsertedState(VendingMachine vendingMachine) {
-        this.vendingMachine = vendingMachine;
+        super(vendingMachine);
     }
 
     @Override
@@ -30,6 +28,12 @@ public class CoinInsertedState implements State {
     @Override
     public Product dispenseProduct(String code) {
         throw new MachineException("Press Dispense Button");
+    }
+
+    @Override
+    public void cancel() {
+        vendingMachine.setTotalInsertedAmount(0.0);
+        vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
     }
 
     private boolean sufficientAmountInserted(String code) {

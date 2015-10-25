@@ -93,6 +93,10 @@ public class VendingMachine {
     public State getDispenseState() {
         return dispenseState;
     }
+
+    public void setTotalInsertedAmount(double totalInsertedAmount) {
+        this.totalInsertedAmount = totalInsertedAmount;
+    }
 }
 
 

@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoCoinInsertedState implements State {
-    @Autowired
-    private VendingMachine vendingMachine;
+public class NoCoinInsertedState extends State {
 
     public NoCoinInsertedState(VendingMachine vendingMachine) {
-        this.vendingMachine =vendingMachine;
+        super(vendingMachine);
     }
 
     @Override
