@@ -1,3 +1,6 @@
+import com.vendingmachine.AvailableProductBank;
+import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.ProductUnAvailableException;
 import org.junit.Before;
 import org.junit.Test;
 

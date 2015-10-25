@@ -1,3 +1,8 @@
+package com.vendingmachine;
+
+import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.ProductUnAvailableException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

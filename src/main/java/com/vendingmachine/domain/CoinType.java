@@ -1,3 +1,5 @@
+package com.vendingmachine.domain;
+
 import lombok.Getter;
 
 /**

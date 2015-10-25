@@ -1,3 +1,5 @@
+package com.vendingmachine.exceptions;
+
 /**
  * Created by jmohammed on 10/24/15.
  */

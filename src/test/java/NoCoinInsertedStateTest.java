@@ -1,3 +1,8 @@
+import com.vendingmachine.*;
+import com.vendingmachine.domain.Coin;
+import com.vendingmachine.exceptions.MachineException;
+import com.vendingmachine.states.CoinInsertedState;
+import com.vendingmachine.states.NoCoinInsertedState;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

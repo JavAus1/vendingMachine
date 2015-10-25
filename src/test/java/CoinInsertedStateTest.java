@@ -1,3 +1,9 @@
+import com.vendingmachine.*;
+import com.vendingmachine.domain.Coin;
+import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.MachineException;
+import com.vendingmachine.states.CoinInsertedState;
+import com.vendingmachine.states.DispenseState;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -7,7 +13,6 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

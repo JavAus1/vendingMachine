@@ -1,9 +1,15 @@
+import com.vendingmachine.*;
+import com.vendingmachine.domain.Coin;
+import com.vendingmachine.domain.CoinType;
+import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.MachineException;
+import com.vendingmachine.exceptions.ProductUnAvailableException;
+import com.vendingmachine.states.State;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -14,7 +20,6 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

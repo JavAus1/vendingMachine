@@ -1,6 +1,15 @@
-import java.util.List;
+package com.vendingmachine.states;
 
+import com.vendingmachine.*;
+import com.vendingmachine.domain.Coin;
+import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.MachineException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class CoinInsertedState implements State {
+    @Autowired
     private VendingMachine vendingMachine;
 
     public CoinInsertedState(VendingMachine vendingMachine) {
@@ -9,13 +18,11 @@ public class CoinInsertedState implements State {
 
     @Override
     public void insertMoney(Coin coin) {
-        System.out.println("Amount inserted...." + vendingMachine.getTotalInsertedAmount());
         vendingMachine.insertMoney(coin);
     }
 
     @Override
     public void pressDispenseButton(String code) {
-        System.out.println("Selected product..." + code);
         if (isProductAvailable(code) && sufficientAmountInserted(code))
             vendingMachine.setMachineState(vendingMachine.getDispenseState());
     }
@@ -29,6 +36,7 @@ public class CoinInsertedState implements State {
         Double difference = vendingMachine.getProduct(code).getPrice() - vendingMachine.getTotalInsertedAmount();
         if (difference <= 0) {
             return true;
+
         }
         throw new MachineException("Please insert more..." + difference);
     }
@@ -39,4 +47,6 @@ public class CoinInsertedState implements State {
             return true;
         return false;
     }
+
+
 }
