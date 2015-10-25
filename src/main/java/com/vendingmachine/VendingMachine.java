@@ -17,6 +17,8 @@ public class VendingMachine {
     private AvailableProductBank availableProductBank;
     private State machineState = null;
     @Autowired
+    private CoinParser coinParser;
+    @Autowired
     private State noCoinInsertedState;
     @Autowired
     private State coinInsertedState;
@@ -74,6 +76,7 @@ public class VendingMachine {
     }
 
     public void insertMoney(Coin coin) {
+        coinParser.accept(coin);
         totalInsertedAmount += coin.getCoinType().getCoinValue();
     }
 
@@ -96,6 +99,10 @@ public class VendingMachine {
 
     public void setTotalInsertedAmount(double totalInsertedAmount) {
         this.totalInsertedAmount = totalInsertedAmount;
+    }
+
+    public void setCoinParser(CoinParser coinParser) {
+        this.coinParser = coinParser;
     }
 }
 
