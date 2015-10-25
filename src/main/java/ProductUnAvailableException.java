@@ -5,4 +5,8 @@ public class ProductUnAvailableException extends RuntimeException {
     public ProductUnAvailableException(String s) {
         super(s);
     }
+
+    public ProductUnAvailableException() {
+
+    }
 }

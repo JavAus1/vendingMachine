@@ -59,5 +59,4 @@ public class AvailableProductBankTest {
         assertEquals(1, availableProductBank.getCount("A1"));
     }
 
-
 }

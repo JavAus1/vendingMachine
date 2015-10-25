@@ -8,14 +8,6 @@ public class AvailableProductBank {
 
     private Map<String, List<Product>> availableProducts = new HashMap<String, List<Product>>();
 
-    public Product dispenseProduct(String productCode) {
-        List<Product> products = availableProducts.get(productCode);
-        if (products != null && products.size() > 0) {
-            return products.remove(products.size() - 1);
-        }
-        throw new ProductUnAvailableException("Product Unavailable");
-    }
-
     public void populateProduct(String code, Product product) {
         if (availableProducts.get(code) == null) {
             availableProducts.put(code, newArrayList(product));
@@ -24,7 +16,21 @@ public class AvailableProductBank {
         }
     }
 
+    public Product dispenseProduct(String productCode) {
+        List<Product> products = availableProducts.get(productCode);
+        if (products != null && products.size() > 0) {
+            return products.remove(products.size() - 1);
+        }
+        throw new ProductUnAvailableException("Product Out of stock");
+    }
+
+
+
     public int getCount(String code) {
         return availableProducts.get(code).size();
+    }
+
+    public Map<String, List<Product>> getAvailableProducts() {
+        return availableProducts;
     }
 }
