@@ -1,5 +1,6 @@
 package com.vendingmachine;
 
+import com.vendingmachine.domain.PaymentType;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.parser.PaymentParser;
 import com.vendingmachine.productinventory.ProductInventoryBank;
@@ -43,7 +44,7 @@ public class VendingMachine {
         return machineState.cancel();
     }
 
-    public void process(PaymentType paymentType) {
+     public void process(PaymentType paymentType) {
         paymentParser.accept(paymentType);
     }
 

@@ -1,6 +1,6 @@
 package com.vendingmachine.states;
 
-import com.vendingmachine.*;
+import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.exceptions.MachineException;
 import org.junit.Before;
@@ -12,8 +12,6 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +29,7 @@ public class NoCoinInsertedStateTest {
 
     @Before
     public void setUp() {
-        noCoinInsertedState = new NoCoinInsertedState(mockVendingMachine );
+        noCoinInsertedState = new NoCoinInsertedState(mockVendingMachine);
     }
 
     @Test

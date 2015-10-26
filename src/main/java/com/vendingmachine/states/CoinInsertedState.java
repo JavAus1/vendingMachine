@@ -1,6 +1,6 @@
 package com.vendingmachine.states;
 
-import com.vendingmachine.PaymentType;
+import com.vendingmachine.domain.PaymentType;
 import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
@@ -17,7 +17,7 @@ public class CoinInsertedState extends State {
 
     @Override
     public void insertMoney(PaymentType paymentType) {
-        paymentType.validateAndProcess(paymentType,vendingMachine);
+        paymentType.validateAndProcess(paymentType, vendingMachine);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class CoinInsertedState extends State {
     }
 
     private boolean isProductAvailable(String productCode) {
-        return vendingMachine.isProductAvailable(productCode) ;
+        return vendingMachine.isProductAvailable(productCode);
     }
 }

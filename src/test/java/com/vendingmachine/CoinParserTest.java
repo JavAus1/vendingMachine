@@ -4,8 +4,7 @@ import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
 import com.vendingmachine.exceptions.InValidCoinTypeException;
 import com.vendingmachine.parser.CoinParser;
-import com.vendingmachine.parser.PaymentParser;
-import com.vendingmachine.parser.CoinValidator;
+import com.vendingmachine.validator.CoinValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,8 +49,8 @@ public class CoinParserTest {
 
         coinParser.accept(coin);
 
-        assertThat(coinParser.getTotalInsertedAmount(),is(0.1));
-        assertEquals(1,coinParser.getCoinList().size());
+        assertThat(coinParser.getTotalInsertedAmount(), is(0.1));
+        assertEquals(1, coinParser.getCoinList().size());
     }
 
     @Test(expected = InValidCoinTypeException.class)
@@ -75,7 +74,7 @@ public class CoinParserTest {
 
         coinParser.clearAndDebitAmount();
 
-        assertEquals(0,coinParser.getCoinList().size());
+        assertEquals(0, coinParser.getCoinList().size());
     }
 
     /*

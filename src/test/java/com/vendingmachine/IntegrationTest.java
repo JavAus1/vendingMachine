@@ -3,9 +3,9 @@ package com.vendingmachine;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
 import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.InValidCoinTypeException;
 import com.vendingmachine.exceptions.MachineException;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
-import com.vendingmachine.parser.CoinParser;
 import com.vendingmachine.productinventory.AvailableProductBank;
 import com.vendingmachine.productinventory.ProductInventoryBank;
 import org.junit.Before;
@@ -15,7 +15,6 @@ import org.junit.rules.ExpectedException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,18 +86,15 @@ public class IntegrationTest {
 
     }
 
-    /*@Test
+    @Test(expected = InValidCoinTypeException.class)
     public void throwsExceptionWheInvalidCoinIsInserted() throws Exception {
         Coin coin1 = new Coin();
         coin1.setCoinType(CoinType.PENNY);
         vendingMachine.insertPayment(coin1);
-        thrown.expect(InValidCoinTypeException.class);
-//        thrown.expectMessage("Invalid Coin Type");
 
         vendingMachine.pressButton("A2");
-
     }
-*/
+
     @Test
     public void throwsExceptionWhenEnoughAmountIsNotInserted() throws Exception {
         Coin coin1 = new Coin();
@@ -140,7 +136,7 @@ public class IntegrationTest {
         coin1.setCoinType(CoinType.NICKEL);
         vendingMachine.insertPayment(coin1);
         List<Product> listOfProducts = productInventoryBank.getListOfProducts("A3");
-        listOfProducts.remove(listOfProducts.size()-1);
+        listOfProducts.remove(listOfProducts.size() - 1);
         thrown.expect(ProductUnAvailableException.class);
         thrown.expectMessage("Product Out of stock");
 

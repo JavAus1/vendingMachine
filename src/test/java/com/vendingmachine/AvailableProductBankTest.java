@@ -1,9 +1,9 @@
 package com.vendingmachine;
 
-import com.vendingmachine.exceptions.MachineException;
-import com.vendingmachine.productinventory.AvailableProductBank;
 import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.MachineException;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
+import com.vendingmachine.productinventory.AvailableProductBank;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
 
 public class AvailableProductBankTest {
 
@@ -57,7 +56,7 @@ public class AvailableProductBankTest {
         assertEquals("pepsi", retrieveProduct.getName());
     }
 
-    @Test(expected=ProductUnAvailableException.class)
+    @Test(expected = ProductUnAvailableException.class)
     public void throwsExceptionIfProductDoestNotExist() {
         Product product = new Product("A1", "pepsi", 10.0);
         availableProductBank.populateProduct("A1", product);

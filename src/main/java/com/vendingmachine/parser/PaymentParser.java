@@ -1,6 +1,6 @@
 package com.vendingmachine.parser;
 
-import com.vendingmachine.PaymentType;
+import com.vendingmachine.domain.PaymentType;
 
 public interface PaymentParser {
     public void accept(PaymentType paymentType);

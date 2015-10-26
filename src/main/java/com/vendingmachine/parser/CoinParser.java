@@ -1,8 +1,9 @@
 package com.vendingmachine.parser;
 
-import com.vendingmachine.PaymentType;
+import com.vendingmachine.domain.PaymentType;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.exceptions.InValidCoinTypeException;
+import com.vendingmachine.validator.ICoinValidator;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 @Getter
 @Setter

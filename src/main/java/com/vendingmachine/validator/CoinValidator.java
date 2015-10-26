@@ -1,4 +1,4 @@
-package com.vendingmachine.parser;
+package com.vendingmachine.validator;
 
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
-public class CoinValidator implements ICoinValidator{
+public class CoinValidator implements ICoinValidator {
     public boolean validate(Coin coin) {
         return getValidCoinTypes().contains(coin.getCoinType());
     }

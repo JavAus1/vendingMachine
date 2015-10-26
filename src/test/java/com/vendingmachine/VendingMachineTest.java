@@ -14,8 +14,8 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -54,10 +54,34 @@ public class VendingMachineTest {
         verify(mockCoinParser).accept(Matchers.<Coin>anyObject());
     }
 
-
     @Test
     public void correctlyInvokesDispenseProduct() throws Exception {
         vendingMachine.pressButton("A1");
         verify(machineState).dispenseProduct("A1");
     }
+
+    @Test
+    public void invokesPaymentProperly() throws Exception {
+        Coin coin = new Coin();
+        coin.setCoinType(CoinType.DIME);
+
+        vendingMachine.insertPayment(coin);
+
+        verify(machineState).insertMoney(Matchers.<Coin>anyObject());
+    }
+
+    @Test
+    public void correctlyInvokesCancelButton() throws Exception {
+        vendingMachine.pressCancelButton();
+
+        verify(machineState).cancel();
+    }
+
+    @Test
+    public void invokesBankToCheckIfProductIsAvailable() throws Exception {
+        vendingMachine.isProductAvailable(anyString());
+
+        verify(mockAvailableProductBank).getProduct(anyString());
+    }
 }
+

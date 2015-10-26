@@ -1,6 +1,6 @@
 package com.vendingmachine.states;
 
-import com.vendingmachine.PaymentType;
+import com.vendingmachine.domain.PaymentType;
 import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Product;
 import lombok.EqualsAndHashCode;

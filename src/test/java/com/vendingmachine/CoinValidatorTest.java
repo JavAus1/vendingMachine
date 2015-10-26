@@ -2,11 +2,12 @@ package com.vendingmachine;
 
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
-import com.vendingmachine.parser.CoinValidator;
+import com.vendingmachine.validator.CoinValidator;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CoinValidatorTest {
 
