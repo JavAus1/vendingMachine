@@ -40,7 +40,7 @@ public class NoCoinInsertedStateTest {
 
         verify(mockCoin).validateAndProcess(Matchers.<Coin>anyObject(), Matchers.<VendingMachine>anyObject());
     }
-    
+
     @Test
     public void changesMachineStateWhenCoinIsInserted() {
         CoinInsertedState coinInsertedState = new CoinInsertedState(mockVendingMachine);

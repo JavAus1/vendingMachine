@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class Coin implements PaymentType {
     private CoinType coinType;
-    @Autowired
-    private CoinParser coinParser;
 
     @Override
     public void validateAndProcess(PaymentType paymentType, VendingMachine vendingMachine) {
