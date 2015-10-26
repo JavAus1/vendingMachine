@@ -1,16 +1,15 @@
 package com.vendingmachine.states;
 
-import com.vendingmachine.*;
+import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class NoCoinInsertedState extends State {
-
-    public NoCoinInsertedState() {
-    }
 
     public NoCoinInsertedState(VendingMachine vendingMachine) {
         super(vendingMachine);

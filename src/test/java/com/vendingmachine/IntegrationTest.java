@@ -1,10 +1,8 @@
 package com.vendingmachine;
 
-import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
 import com.vendingmachine.domain.Product;
-import com.vendingmachine.exceptions.InValidCoinTypeException;
 import com.vendingmachine.exceptions.MachineException;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
 import com.vendingmachine.productinventory.AvailableProductBank;
@@ -20,8 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class IntegrationTest {
     private VendingMachine vendingMachine;
@@ -34,13 +33,13 @@ public class IntegrationTest {
     public void setUp() throws Exception {
         ApplicationContext context =
                 new ClassPathXmlApplicationContext("/applicatonContext.xml");
-       vendingMachine = (VendingMachine) context.getBean("vendingMachine");
+        vendingMachine = (VendingMachine) context.getBean("vendingMachine");
         vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
         productInventory = new HashMap<String, List<Product>>();
         productInventoryBank = new AvailableProductBank();
-        productInventoryBank.populateProduct("A1",new Product("A1","pepsi", 0.50));
-        productInventoryBank.populateProduct("A2",new Product("A2","chips", 1.0));
-        productInventoryBank.populateProduct("A3",new Product("A3","cookies", 0.25));
+        productInventoryBank.populateProduct("A1", new Product("A1", "pepsi", 0.50));
+        productInventoryBank.populateProduct("A2", new Product("A2", "chips", 1.0));
+        productInventoryBank.populateProduct("A3", new Product("A3", "cookies", 0.25));
         vendingMachine.setAvailableProductBank(productInventoryBank);
     }
 
@@ -51,7 +50,7 @@ public class IntegrationTest {
         vendingMachine.insertPayment(coin);
         Product product = vendingMachine.pressButton("A3");
 
-        assertEquals("A3",product.getCode());
+        assertEquals("A3", product.getCode());
     }
 
     @Test
@@ -65,7 +64,7 @@ public class IntegrationTest {
 
         Product product = vendingMachine.pressButton("A1");
 
-        assertEquals("A1",product.getCode());
+        assertEquals("A1", product.getCode());
     }
 
     @Test
@@ -82,7 +81,7 @@ public class IntegrationTest {
 
         Product product = vendingMachine.pressButton("A2");
 
-        assertEquals("A2",product.getCode());
+        assertEquals("A2", product.getCode());
 
     }
 
@@ -133,11 +132,120 @@ public class IntegrationTest {
     }
 
     @Test
+    public void selectsDifferentProductWhenInitialProductIsOutOfStock() throws Exception {
+        Coin coin1 = new Coin();
+        coin1.setCoinType(CoinType.NICKEL);
+        vendingMachine.insertPayment(coin1);
+        productInventoryBank.getAvailableProducts().get("A3").clear();
+        thrown.expect(ProductUnAvailableException.class);
+        thrown.expectMessage("Product Out of stock");
+
+        vendingMachine.pressButton("A3");
+        Product product = vendingMachine.pressButton("A1");
+
+        assertEquals("A1", product.getCode());
+    }
+
+    @Test
+    public void selectsThirdProductWhenInitialTwoProductsAreOutOfStock() throws Exception {
+        Coin coin1 = new Coin();
+        coin1.setCoinType(CoinType.NICKEL);
+        vendingMachine.insertPayment(coin1);
+        productInventoryBank.getAvailableProducts().get("A2").clear();
+        productInventoryBank.getAvailableProducts().get("A3").clear();
+        thrown.expect(ProductUnAvailableException.class);
+        thrown.expectMessage("Product Out of stock");
+
+        vendingMachine.pressButton("A3");
+        vendingMachine.pressButton("A2");
+        Product product = vendingMachine.pressButton("A1");
+
+        assertEquals("A1", product.getCode());
+    }
+
+    @Test
     public void throwsExceptionWhenButtonIsPressedBeforeInsertingMoney() throws Exception {
         thrown.expect(MachineException.class);
         thrown.expectMessage("Not Applicable..Please insert money and press Dispense button");
 
         vendingMachine.pressButton("A3");
+    }
+
+    @Test
+    public void cancelsAfterInsertingCoin() throws Exception {
+        Coin coin1 = new Coin();
+        coin1.setCoinType(CoinType.QUARTER);
+        vendingMachine.insertPayment(coin1);
+
+        Double returnAmount = vendingMachine.pressCancelButton();
+
+        assertThat(returnAmount, is(0.25));
+    }
+
+    @Test
+    public void cancelsAfterInsertingMultipleCoins() throws Exception {
+        Coin coin1 = new Coin();
+        coin1.setCoinType(CoinType.QUARTER);
+        Coin coin2 = new Coin();
+        coin2.setCoinType(CoinType.NICKEL);
+
+        vendingMachine.insertPayment(coin1);
+        vendingMachine.insertPayment(coin2);
+
+        Double returnAmount = vendingMachine.pressCancelButton();
+
+        assertThat(returnAmount, is(0.75));
+    }
+
+    @Test
+    public void returnsAmountAndThrowsExceptionWhenMachineIsEmpty() throws Exception {
+        Coin coin1 = new Coin();
+        coin1.setCoinType(CoinType.QUARTER);
+        vendingMachine.setAvailableProductBank(null);
+        thrown.expect(MachineException.class);
+        thrown.expectMessage("No products Present...Please come back later");
+        vendingMachine.insertPayment(coin1);
+
+        vendingMachine.pressButton("A3");
+        Double returnAmount = vendingMachine.pressCancelButton();
+
+        assertThat(returnAmount, is(0.25));
+    }
+
+    @Test
+    public void pressCancelButtonBeforeInsertingAnyMoney() throws Exception {
+        Double returnAmount = vendingMachine.pressCancelButton();
+
+        assertThat(returnAmount, is(0.0));
+    }
+
+    @Test
+    public void pressesCancelWhenAProductIsOutOfStock() throws Exception {
+        Coin coin1 = new Coin();
+        coin1.setCoinType(CoinType.QUARTER);
+        vendingMachine.insertPayment(coin1);
+        productInventoryBank.getAvailableProducts().get("A3").clear();
+        thrown.expect(ProductUnAvailableException.class);
+        thrown.expectMessage("Product Out of stock");
+
+        vendingMachine.pressButton("A3");
+        Double returnAmount = vendingMachine.pressCancelButton();
+
+        assertThat(returnAmount, is(0.25));
+    }
+
+    @Test
+    public void pressesCancelWhenMachineIsEmpty() throws Exception {
+        Coin coin1 = new Coin();
+        coin1.setCoinType(CoinType.QUARTER);
+        vendingMachine.insertPayment(coin1);
+        vendingMachine.setAvailableProductBank(null);
+        thrown.expect(MachineException.class);
+
+        vendingMachine.pressButton("A3");
+        Double returnAmount = vendingMachine.pressCancelButton();
+
+        assertThat(returnAmount, is(0.25));
     }
 
 }

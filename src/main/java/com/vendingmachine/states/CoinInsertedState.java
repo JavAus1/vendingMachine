@@ -4,14 +4,13 @@ import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class CoinInsertedState extends State {
 
-    CoinInsertedState(){
-
-    }
     public CoinInsertedState(VendingMachine vendingMachine) {
         super(vendingMachine);
     }

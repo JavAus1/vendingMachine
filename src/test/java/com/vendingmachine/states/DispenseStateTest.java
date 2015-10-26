@@ -70,4 +70,5 @@ public class DispenseStateTest {
 
         verify(mockVendingMachine).setMachineState(Matchers.<NoCoinInsertedState>anyObject());
     }
+
 }

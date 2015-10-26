@@ -8,12 +8,16 @@ import com.vendingmachine.parser.CoinParser;
 import com.vendingmachine.productinventory.AvailableProductBank;
 import com.vendingmachine.productinventory.ProductInventoryBank;
 import com.vendingmachine.states.State;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Getter
+@Setter
 public class VendingMachine {
 
     private State machineState;
@@ -62,11 +66,10 @@ public class VendingMachine {
     }
 
     private boolean checkIfInventoryExists() {
-        return availableProductBank.getAvailableProducts() != null;
-    }
-
-    public void setMachineState(State machineState) {
-        this.machineState = machineState;
+        if(availableProductBank!=null) {
+            return availableProductBank.getAvailableProducts() != null;
+        }
+        return false;
     }
 
     public ProductInventoryBank getAvailableProductBank() {
@@ -86,28 +89,8 @@ public class VendingMachine {
         return machineState.dispenseProduct(code);
     }
 
-    public State getNoCoinInsertedState() {
-        return noCoinInsertedState;
-    }
-
-    public State getCoinInsertedState() {
-        return coinInsertedState;
-    }
-
-    public State getDispenseState() {
-        return dispenseState;
-    }
-
-    public void setCoinParser(CoinParser coinParser) {
-        this.coinParser = coinParser;
-    }
-
-    public CoinParser getCoinParser() {
-        return coinParser;
-    }
-
-    public void setAvailableProductBank(ProductInventoryBank availableProductBank) {
-        this.availableProductBank = availableProductBank;
+    public Double pressCancelButton() {
+        return  machineState.cancel();
     }
 }
 
