@@ -1,7 +1,7 @@
 package com.vendingmachine.states;
 
+import com.vendingmachine.PaymentType;
 import com.vendingmachine.VendingMachine;
-import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
 import lombok.NoArgsConstructor;
@@ -16,8 +16,8 @@ public class CoinInsertedState extends State {
     }
 
     @Override
-    public void insertMoney(Coin coin) {
-        vendingMachine.process(coin);
+    public void insertMoney(PaymentType paymentType) {
+        paymentType.validateAndProcess(paymentType,vendingMachine);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CoinInsertedState extends State {
 
     private boolean sufficientAmountInserted(String code) {
         Double difference = vendingMachine.getAvailableProductBank().getProduct(code).getPrice()
-                - vendingMachine.getCoinParser().getTotalInsertedAmount();
+                - vendingMachine.getPaymentParser().getTotalInsertedAmount();
         if (difference <= 0) {
             return true;
 

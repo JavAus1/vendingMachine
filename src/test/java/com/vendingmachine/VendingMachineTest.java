@@ -2,10 +2,7 @@ package com.vendingmachine;
 
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
-import com.vendingmachine.domain.Product;
-import com.vendingmachine.exceptions.MachineException;
-import com.vendingmachine.exceptions.ProductUnAvailableException;
-import com.vendingmachine.parser.CoinParser;
+import com.vendingmachine.parser.PaymentParser;
 import com.vendingmachine.productinventory.AvailableProductBank;
 import com.vendingmachine.states.State;
 import org.junit.Before;
@@ -17,15 +14,9 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VendingMachineTest {
@@ -35,7 +26,7 @@ public class VendingMachineTest {
     @Mock
     private State machineState;
     @Mock
-    private CoinParser mockCoinParser;
+    private PaymentParser mockCoinParser;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -50,7 +41,7 @@ public class VendingMachineTest {
         vendingMachine = new VendingMachine();
         vendingMachine.setAvailableProductBank(mockAvailableProductBank);
         vendingMachine.setMachineState(machineState);
-        vendingMachine.setCoinParser(mockCoinParser);
+        vendingMachine.setPaymentParser(mockCoinParser);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.vendingmachine.parser;
 
+import com.vendingmachine.PaymentType;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.exceptions.InValidCoinTypeException;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Component
 @Getter
 @Setter
-public class CoinParser {
+public class CoinParser implements PaymentParser {
     @Autowired
     private ICoinValidator coinValidator;
 
@@ -23,7 +24,8 @@ public class CoinParser {
     private List<Coin> coinList = new ArrayList<Coin>();
     private Double totalInsertedAmount = 0.0;
 
-    public void accept(Coin coin) {
+    public void accept(PaymentType paymentType) {
+        Coin coin = (Coin) paymentType;
         if (coinValidator.validate(coin)) {
             coinList.add(coin);
             totalInsertedAmount += coin.getCoinType().getCoinValue();
@@ -32,7 +34,10 @@ public class CoinParser {
         }
     }
 
-    public void clearCoinsList() {
+    @Override
+    public Double clearAndDebitAmount() {
         coinList.clear();
+        return totalInsertedAmount;
     }
+
 }

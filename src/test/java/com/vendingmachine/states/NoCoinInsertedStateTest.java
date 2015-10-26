@@ -12,6 +12,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,6 +23,8 @@ public class NoCoinInsertedStateTest {
     private NoCoinInsertedState noCoinInsertedState;
     @Mock
     private VendingMachine mockVendingMachine;
+    @Mock
+    private Coin mockCoin;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -33,17 +36,17 @@ public class NoCoinInsertedStateTest {
 
     @Test
     public void correctlyInvokesAcceptCoin() throws Exception {
-        noCoinInsertedState.insertMoney(new Coin());
+        noCoinInsertedState.insertMoney(mockCoin);
 
-        verify(mockVendingMachine).process(Matchers.<Coin>anyObject());
+        verify(mockCoin).validateAndProcess(Matchers.<Coin>anyObject(), Matchers.<VendingMachine>anyObject());
     }
-
+    
     @Test
     public void changesMachineStateWhenCoinIsInserted() {
         CoinInsertedState coinInsertedState = new CoinInsertedState(mockVendingMachine);
         when(mockVendingMachine.getCoinInsertedState()).thenReturn(coinInsertedState);
 
-        noCoinInsertedState.insertMoney(new Coin());
+        noCoinInsertedState.insertMoney(mockCoin);
 
         verify(mockVendingMachine).setMachineState(Matchers.<CoinInsertedState>anyObject());
     }

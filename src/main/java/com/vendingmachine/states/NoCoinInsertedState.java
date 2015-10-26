@@ -1,7 +1,7 @@
 package com.vendingmachine.states;
 
+import com.vendingmachine.PaymentType;
 import com.vendingmachine.VendingMachine;
-import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
 import lombok.NoArgsConstructor;
@@ -16,8 +16,8 @@ public class NoCoinInsertedState extends State {
     }
 
     @Override
-    public void insertMoney(Coin coin) {
-        vendingMachine.process(coin);
+    public void insertMoney(PaymentType paymentType) {
+        paymentType.validateAndProcess(paymentType,vendingMachine);
         vendingMachine.setMachineState(vendingMachine.getCoinInsertedState());
     }
 

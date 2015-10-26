@@ -1,5 +1,6 @@
 package com.vendingmachine.states;
 
+import com.vendingmachine.PaymentType;
 import com.vendingmachine.VendingMachine;
 import com.vendingmachine.dispensemotor.DispenseMode;
 import com.vendingmachine.domain.Coin;
@@ -22,7 +23,7 @@ public class DispenseState extends State {
     }
 
     @Override
-    public void insertMoney(Coin coin) {
+    public void insertMoney(PaymentType paymentType) {
         throw new MachineException("Currently Processing previous request");
 
     }
@@ -36,7 +37,6 @@ public class DispenseState extends State {
     public Product dispenseProduct(String code) {
         List<Product> products = vendingMachine.getAvailableProductBank().getListOfProducts(code);
         Product vendProduct = dispenseMode.dispenseSelectedProduct(products, code);
-//        vendingMachine.getCoinParser()
         vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
         return vendProduct;
     }

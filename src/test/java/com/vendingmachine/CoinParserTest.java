@@ -4,6 +4,7 @@ import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
 import com.vendingmachine.exceptions.InValidCoinTypeException;
 import com.vendingmachine.parser.CoinParser;
+import com.vendingmachine.parser.PaymentParser;
 import com.vendingmachine.parser.CoinValidator;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +73,7 @@ public class CoinParserTest {
         coinParser.accept(coin1);
         coinParser.accept(coin2);
 
-        coinParser.clearCoinsList();
+        coinParser.clearAndDebitAmount();
 
         assertEquals(0,coinParser.getCoinList().size());
     }
@@ -84,11 +85,11 @@ public class CoinParserTest {
         coin1.setCoinType(CoinType.DIME);
         Coin coin2 = new Coin();
         coin2.setCoinType(CoinType.QUARTER);
-        coinParser.accept(coin1);
-        coinParser.accept(coin2);
+        paymentParser.accept(coin1);
+        paymentParser.accept(coin2);
         when(mockCoinValidator.validate(Matchers.<Coin>anyObject())).thenReturn(true);
 
-        List<Coin> coinList = coinParser.remove(new Double(0.25));
+        List<Coin> coinList = paymentParser.remove(new Double(0.25));
 
         assertThat(coinList.get(0).getCoinType().getCoinValue(),is(0.25));
     }*/

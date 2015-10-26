@@ -1,8 +1,7 @@
 package com.vendingmachine;
 
-import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
-import com.vendingmachine.parser.CoinParser;
+import com.vendingmachine.parser.PaymentParser;
 import com.vendingmachine.productinventory.ProductInventoryBank;
 import com.vendingmachine.states.State;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class VendingMachine {
     @Autowired
     private ProductInventoryBank availableProductBank;
     @Autowired
-    private CoinParser coinParser;
+    private PaymentParser paymentParser;
     @Autowired
     private State noCoinInsertedState;
     @Autowired
@@ -31,8 +30,8 @@ public class VendingMachine {
         machineState = noCoinInsertedState;
     }
 
-    public void insertPayment(Coin coin) {
-        machineState.insertMoney(coin);
+    public void insertPayment(PaymentType paymentType) {
+        machineState.insertMoney(paymentType);
     }
 
     public Product pressButton(String code) {
@@ -44,8 +43,8 @@ public class VendingMachine {
         return machineState.cancel();
     }
 
-    public void process(Coin coin) {
-        coinParser.accept(coin);
+    public void process(PaymentType paymentType) {
+        paymentParser.accept(paymentType);
     }
 
     public boolean isProductAvailable(String productCode) {

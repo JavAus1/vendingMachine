@@ -1,11 +1,21 @@
 package com.vendingmachine.domain;
 
+import com.vendingmachine.PaymentType;
+import com.vendingmachine.VendingMachine;
+import com.vendingmachine.parser.CoinParser;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Data
-public class Coin {
+@Component
+public class Coin implements PaymentType {
     private CoinType coinType;
+    @Autowired
+    private CoinParser coinParser;
+
+    @Override
+    public void validateAndProcess(PaymentType paymentType, VendingMachine vendingMachine) {
+        vendingMachine.process(paymentType);
+    }
 }

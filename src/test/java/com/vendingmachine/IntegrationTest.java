@@ -5,6 +5,7 @@ import com.vendingmachine.domain.CoinType;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
+import com.vendingmachine.parser.CoinParser;
 import com.vendingmachine.productinventory.AvailableProductBank;
 import com.vendingmachine.productinventory.ProductInventoryBank;
 import org.junit.Before;
@@ -228,12 +229,13 @@ public class IntegrationTest {
         assertThat(returnAmount, is(0.0));
     }
 
-   /* @Test
+    @Test
     public void pressesCancelWhenAProductIsOutOfStock() throws Exception {
         Coin coin1 = new Coin();
         coin1.setCoinType(CoinType.QUARTER);
         vendingMachine.insertPayment(coin1);
-        productInventoryBank.getAvailableProducts().get("A3").clear();
+        List<Product> listOfA1Products = productInventoryBank.getListOfProducts("A3");
+        listOfA1Products.remove(listOfA1Products.size() - 1);
         thrown.expect(ProductUnAvailableException.class);
         thrown.expectMessage("Product Out of stock");
 
@@ -241,6 +243,6 @@ public class IntegrationTest {
         Double returnAmount = vendingMachine.pressCancelButton();
 
         assertThat(returnAmount, is(0.25));
-    }*/
+    }
 
 }
