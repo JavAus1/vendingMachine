@@ -10,9 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 @Component
+@Getter
+@Setter
 public class CoinParser {
     @Autowired
-    @Setter
     private ICoinValidator coinValidator;
 
     public List<Coin> getCoinList() {
@@ -20,8 +21,6 @@ public class CoinParser {
     }
 
     private List<Coin> coinList = new ArrayList<Coin>();
-    @Getter
-    @Setter
     private Double totalInsertedAmount = 0.0;
 
     public void accept(Coin coin) {

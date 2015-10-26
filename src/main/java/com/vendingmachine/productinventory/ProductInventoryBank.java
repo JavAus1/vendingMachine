@@ -10,7 +10,9 @@ public interface ProductInventoryBank {
 
     public Product dispenseProduct(String productCode);
 
-    public Map<String, List<Product>> getAvailableProducts();
+    public Product getProduct(String productCode);
+
+    public List<Product> getListOfProducts(String productCode);
 
 
 }

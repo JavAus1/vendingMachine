@@ -1,17 +1,11 @@
 package com.vendingmachine.domain;
 
-/**
- * Created by jmohammed on 10/24/15.
- */
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
+@Data
 public class Coin {
     private CoinType coinType;
-
-    public CoinType getCoinType() {
-        return coinType;
-    }
-
-    public void setCoinType(CoinType coinType) {
-        this.coinType = coinType;
-    }
 }

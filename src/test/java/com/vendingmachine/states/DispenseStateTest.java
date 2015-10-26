@@ -53,7 +53,8 @@ public class DispenseStateTest {
     @Test
     public void correctlyInvokesDispenseTheProduct() throws Exception {
         Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
-        when(mockVendingMachine.getListOfProducts("A1")).thenReturn(inventory.get("A1"));
+        when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
+        when(mockAvailableProductBank.getListOfProducts("A1")).thenReturn(inventory.get("A1"));
 
         dispenseState.dispenseProduct("A1");
 
@@ -64,7 +65,7 @@ public class DispenseStateTest {
     public void changesStateAfterDispense() throws Exception {
         Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
         when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
-        when(mockVendingMachine.getListOfProducts("A1")).thenReturn(inventory.get("A1"));
+        when(mockAvailableProductBank.getListOfProducts("A1")).thenReturn(inventory.get("A1"));
 
         dispenseState.dispenseProduct("A1");
 

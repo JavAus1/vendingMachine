@@ -50,12 +50,11 @@ public class CoinInsertedStateTest {
 
     @Test
     public void changesMachineStateToDispenseWhenButtonIsPressed() {
-        Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
         when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
         when(mockCoinParser.getTotalInsertedAmount()).thenReturn(1.0);
-        when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
         when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
+        when(mockVendingMachine.isProductAvailable("A1")).thenReturn(true);
+        when(mockAvailableProductBank.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
 
         coinInsertedState.pressDispenseButton("A1");
 
@@ -64,11 +63,10 @@ public class CoinInsertedStateTest {
 
     @Test
     public void throwsExceptionWhenTryingToDispenseWithNotEnoughMoney() {
-        Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
         when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
-        when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
+        when(mockVendingMachine.isProductAvailable("A1")).thenReturn(true);
         when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
+        when(mockAvailableProductBank.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
         when(mockCoinParser.getTotalInsertedAmount()).thenReturn(0.6);
         thrown.expect(MachineException.class);
         thrown.expectMessage("Please insert more...0.4");
@@ -76,51 +74,4 @@ public class CoinInsertedStateTest {
         coinInsertedState.pressDispenseButton("A1");
     }
 
-    @Test
-    public void changesStateOnlyWhenAmountInsertedIsGreaterThanOrEqualToProductPrice() throws Exception {
-        Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
-        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
-        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(1.0);
-        when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
-        when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
-
-        coinInsertedState.pressDispenseButton("A1");
-
-        verify(mockVendingMachine).setMachineState(Matchers.<DispenseState>anyObject());
-    }
-
-    @Test
-    public void doesNotChangeStateWhenTotalPriceIsLessProductPrice() throws Exception {
-        Map<String, List<Product>> inventory = TestUtils.buildSingleProductInventory();
-        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
-        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(0.6);
-        when(mockVendingMachine.getProduct("A1")).thenReturn(new Product("A1", "pepsi", 1.0));
-        when(mockVendingMachine.getAvailableProductBank()).thenReturn(mockAvailableProductBank);
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(inventory);
-        thrown.expect(MachineException.class);
-        thrown.expectMessage("Please insert more...0.4");
-
-        coinInsertedState.pressDispenseButton("A1");
-
-        verify(mockVendingMachine, times(0)).setMachineState(Matchers.<DispenseState>anyObject());
-    }
-
-    @Test
-    public void changesStateWhenCancelButtonIsPressed() throws Exception {
-        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
-        coinInsertedState.cancel();
-
-        verify(mockVendingMachine).setMachineState(Matchers.<NoCoinInsertedState>anyObject());
-    }
-
-    @Test
-    public void returnsMoneyWhenCancelButtonIsPressed() throws Exception {
-        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
-        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(30.0);
-
-        Double returnedAmount = coinInsertedState.cancel();
-
-        assertThat(returnedAmount, is(30.0));
-    }
 }

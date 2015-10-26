@@ -34,7 +34,7 @@ public class DispenseState extends State {
 
     @Override
     public Product dispenseProduct(String code) {
-        List<Product> products = vendingMachine.getListOfProducts(code);
+        List<Product> products = vendingMachine.getAvailableProductBank().getListOfProducts(code);
         Product vendProduct = dispenseMode.dispenseSelectedProduct(products, code);
 //        vendingMachine.getCoinParser()
         vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());

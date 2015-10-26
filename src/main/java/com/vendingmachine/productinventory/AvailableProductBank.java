@@ -1,8 +1,10 @@
 package com.vendingmachine.productinventory;
 
 import com.vendingmachine.domain.Product;
+import com.vendingmachine.exceptions.MachineException;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class AvailableProductBank implements ProductInventoryBank {
 
     @Getter
+    @Setter
     private Map<String, List<Product>> availableProducts = new HashMap<String, List<Product>>();
 
     public void populateProduct(String code, Product product) {
@@ -38,7 +41,44 @@ public class AvailableProductBank implements ProductInventoryBank {
         return availableProducts.get(code).size();
     }
 
-    public Map<String, List<Product>> getAvailableProducts() {
+    private Map<String, List<Product>> getAvailableProducts() {
         return availableProducts;
     }
+
+    public Product getProduct(String productCode) {
+        if (checkIfInventoryExists()) {
+            List<Product> products = this.getAvailableProducts().get(productCode);
+            if (isProductOutOfStock(products)) {
+                throw new ProductUnAvailableException("Product Out of stock");
+            }
+            return products.get(products.size() - 1);
+        }
+        throw new MachineException("No products Present...Please come back later");
+    }
+
+    public List<Product> getListOfProducts(String productCode) {
+        if (checkIfInventoryExists()) {
+            List<Product> products = this.getAvailableProducts().get(productCode);
+            if (isProductOutOfStock(products)) {
+                throw new ProductUnAvailableException("Product Out of stock");
+            }
+            return products;
+        }
+        throw new MachineException("No products Present...Please come back later");
+    }
+
+    private boolean isProductOutOfStock(List<Product> products) {
+        if (products != null) {
+            return products.isEmpty();
+        }
+        return true;
+    }
+
+    private boolean checkIfInventoryExists() {
+        if(this!=null) {
+            return this.getAvailableProducts() != null;
+        }
+        return false;
+    }
+
 }

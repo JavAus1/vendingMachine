@@ -32,7 +32,7 @@ public class CoinInsertedState extends State {
     }
 
     private boolean sufficientAmountInserted(String code) {
-        Double difference = vendingMachine.getProduct(code).getPrice()
+        Double difference = vendingMachine.getAvailableProductBank().getProduct(code).getPrice()
                 - vendingMachine.getCoinParser().getTotalInsertedAmount();
         if (difference <= 0) {
             return true;
@@ -42,11 +42,6 @@ public class CoinInsertedState extends State {
     }
 
     private boolean isProductAvailable(String productCode) {
-        Product product = vendingMachine.getProduct(productCode);
-        if (product != null)
-            return true;
-        return false;
+        return vendingMachine.isProductAvailable(productCode) ;
     }
-
-
 }

@@ -63,35 +63,6 @@ public class VendingMachineTest {
         verify(mockCoinParser).accept(Matchers.<Coin>anyObject());
     }
 
-    @Test
-    public void correctlyReturnsTheRequestProduct() {
-        Map<String, List<Product>> availableProducts = TestUtils.buildSingleProductInventory();
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(availableProducts);
-
-        assertEquals("A1", vendingMachine.getProduct("A1").getCode());
-    }
-
-    @Test
-    public void throwsExceptionWhenProductIsOutOfStock() {
-        List<Product> productList = new ArrayList<Product>();
-        Map<String, List<Product>> availableProducts = new HashMap<String, List<Product>>();
-        availableProducts.put("A1", productList);
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(availableProducts);
-        thrown.expect(ProductUnAvailableException.class);
-
-        vendingMachine.getProduct("A1").getCode();
-    }
-
-    @Test
-    public void throwsExceptionWhenNoProductInventory() throws Exception {
-        Map<String, List<Product>> availableProducts = null;
-        when(mockAvailableProductBank.getAvailableProducts()).thenReturn(availableProducts);
-        thrown.expect(MachineException.class);
-        thrown.expectMessage("No products Present...Please come back later");
-
-        vendingMachine.getProduct("A1").getCode();
-
-    }
 
     @Test
     public void correctlyInvokesDispenseProduct() throws Exception {
