@@ -1,22 +1,24 @@
 package com.vendingmachine.states;
 
-import com.vendingmachine.*;
+import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CoinInsertedState extends State {
 
+    CoinInsertedState(){
+
+    }
     public CoinInsertedState(VendingMachine vendingMachine) {
         super(vendingMachine);
     }
 
     @Override
     public void insertMoney(Coin coin) {
-        vendingMachine.insertMoney(coin);
+        vendingMachine.process(coin);
     }
 
     @Override

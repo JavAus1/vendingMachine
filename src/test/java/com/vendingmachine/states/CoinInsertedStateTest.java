@@ -1,9 +1,12 @@
-import com.vendingmachine.*;
+package com.vendingmachine.states;
+
+import com.vendingmachine.productinventory.AvailableProductBank;
+import com.vendingmachine.TestUtils;
+import com.vendingmachine.VendingMachine;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
-import com.vendingmachine.states.CoinInsertedState;
-import com.vendingmachine.states.DispenseState;
+import com.vendingmachine.parser.CoinParser;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,9 +19,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CoinInsertedStateTest {
@@ -42,7 +45,7 @@ public class CoinInsertedStateTest {
     public void correctlyInvokesToAcceptCoinInVendingMachine() {
         coinInsertedState.insertMoney(new Coin());
 
-        verify(mockVendingMachine).insertMoney(Matchers.<Coin>anyObject());
+        verify(mockVendingMachine).process(Matchers.<Coin>anyObject());
     }
 
     @Test
@@ -101,5 +104,23 @@ public class CoinInsertedStateTest {
         coinInsertedState.pressDispenseButton("A1");
 
         verify(mockVendingMachine, times(0)).setMachineState(Matchers.<DispenseState>anyObject());
+    }
+
+    @Test
+    public void changesStateWhenCancelButtonIsPressed() throws Exception {
+        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
+        coinInsertedState.cancel();
+
+        verify(mockVendingMachine).setMachineState(Matchers.<NoCoinInsertedState>anyObject());
+    }
+
+    @Test
+    public void returnsMoneyWhenCancelButtonIsPressed() throws Exception {
+        when(mockVendingMachine.getCoinParser()).thenReturn(mockCoinParser);
+        when(mockCoinParser.getTotalInsertedAmount()).thenReturn(30.0);
+
+        Double returnedAmount = coinInsertedState.cancel();
+
+        assertThat(returnedAmount, is(30.0));
     }
 }

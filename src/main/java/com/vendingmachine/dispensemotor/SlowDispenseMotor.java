@@ -10,7 +10,7 @@ public class SlowDispenseMotor implements DispenseMode {
     @Override
     public Product dispenseSelectedProduct(List<Product> products, String productCode) {
         try {
-            Thread.sleep(30000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

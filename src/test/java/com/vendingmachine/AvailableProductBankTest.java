@@ -1,4 +1,6 @@
-import com.vendingmachine.AvailableProductBank;
+package com.vendingmachine;
+
+import com.vendingmachine.productinventory.AvailableProductBank;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
 import org.junit.Before;

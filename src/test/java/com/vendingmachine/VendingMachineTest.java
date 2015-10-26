@@ -1,9 +1,12 @@
-import com.vendingmachine.*;
+package com.vendingmachine;
+
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.CoinType;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
+import com.vendingmachine.parser.CoinParser;
+import com.vendingmachine.productinventory.AvailableProductBank;
 import com.vendingmachine.states.State;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,7 +24,6 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -56,7 +58,7 @@ public class VendingMachineTest {
         Coin coin = new Coin();
         coin.setCoinType(CoinType.DIME);
 
-        vendingMachine.insertMoney(coin);
+        vendingMachine.process(coin);
 
         verify(mockCoinParser).accept(Matchers.<Coin>anyObject());
     }

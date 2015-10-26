@@ -1,10 +1,12 @@
-import com.vendingmachine.*;
+package com.vendingmachine.states;
+
+import com.vendingmachine.productinventory.AvailableProductBank;
+import com.vendingmachine.TestUtils;
+import com.vendingmachine.VendingMachine;
 import com.vendingmachine.dispensemotor.DispenseMode;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
-import com.vendingmachine.states.DispenseState;
-import com.vendingmachine.states.NoCoinInsertedState;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

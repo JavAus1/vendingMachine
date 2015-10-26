@@ -1,8 +1,8 @@
+package com.vendingmachine.states;
+
 import com.vendingmachine.*;
 import com.vendingmachine.domain.Coin;
 import com.vendingmachine.exceptions.MachineException;
-import com.vendingmachine.states.CoinInsertedState;
-import com.vendingmachine.states.NoCoinInsertedState;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class NoCoinInsertedStateTest {
     public void correctlyInvokesAcceptCoin() throws Exception {
         noCoinInsertedState.insertMoney(new Coin());
 
-        verify(mockVendingMachine).insertMoney(Matchers.<Coin>anyObject());
+        verify(mockVendingMachine).process(Matchers.<Coin>anyObject());
     }
 
     @Test

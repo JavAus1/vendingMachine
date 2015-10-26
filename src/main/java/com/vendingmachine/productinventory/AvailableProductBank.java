@@ -1,15 +1,16 @@
-package com.vendingmachine;
+package com.vendingmachine.productinventory;
 
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
-
-public class AvailableProductBank {
+@Component
+public class AvailableProductBank implements ProductInventoryBank {
 
     private Map<String, List<Product>> availableProducts = new HashMap<String, List<Product>>();
 

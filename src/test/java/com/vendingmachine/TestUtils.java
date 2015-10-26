@@ -1,3 +1,5 @@
+package com.vendingmachine;
+
 import com.vendingmachine.domain.Product;
 
 import java.util.ArrayList;

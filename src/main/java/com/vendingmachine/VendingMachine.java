@@ -4,6 +4,9 @@ import com.vendingmachine.domain.Coin;
 import com.vendingmachine.domain.Product;
 import com.vendingmachine.exceptions.MachineException;
 import com.vendingmachine.exceptions.ProductUnAvailableException;
+import com.vendingmachine.parser.CoinParser;
+import com.vendingmachine.productinventory.AvailableProductBank;
+import com.vendingmachine.productinventory.ProductInventoryBank;
 import com.vendingmachine.states.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +16,9 @@ import java.util.List;
 @Component
 public class VendingMachine {
 
-    private AvailableProductBank availableProductBank;
-    private State machineState = null;
+    private State machineState;
+    @Autowired
+    private ProductInventoryBank availableProductBank;
     @Autowired
     private CoinParser coinParser;
     @Autowired
@@ -51,33 +55,35 @@ public class VendingMachine {
     }
 
     private boolean isProductOutOfStock(List<Product> products) {
-        return products.isEmpty();
+        if (products != null) {
+            return products.isEmpty();
+        }
+        return true;
     }
 
     private boolean checkIfInventoryExists() {
         return availableProductBank.getAvailableProducts() != null;
     }
 
-    public void setAvailableProductBank(AvailableProductBank availableProductBank) {
-        this.availableProductBank = availableProductBank;
-    }
-
     public void setMachineState(State machineState) {
         this.machineState = machineState;
     }
 
-    public AvailableProductBank getAvailableProductBank() {
+    public ProductInventoryBank getAvailableProductBank() {
         return availableProductBank;
     }
 
-    public void insertMoney(Coin coin) {
-        coinParser.accept(coin);
-//        totalInsertedAmount += coin.getCoinType().getCoinValue();
+    public void insertPayment(Coin coin) {
+        machineState.insertMoney(coin);
     }
 
-    public void pressButton(String code) {
+    public void process(Coin coin) {
+        coinParser.accept(coin);
+    }
+
+    public Product pressButton(String code) {
         machineState.pressDispenseButton(code);
-        machineState.dispenseProduct(code);
+        return machineState.dispenseProduct(code);
     }
 
     public State getNoCoinInsertedState() {
@@ -98,6 +104,10 @@ public class VendingMachine {
 
     public CoinParser getCoinParser() {
         return coinParser;
+    }
+
+    public void setAvailableProductBank(ProductInventoryBank availableProductBank) {
+        this.availableProductBank = availableProductBank;
     }
 }
 

@@ -15,6 +15,9 @@ public class DispenseState extends State {
     @Resource(name = "fastDispenseMotor")
     private DispenseMode dispenseMode;
 
+    public DispenseState() {
+    }
+
     public DispenseState(VendingMachine vendingMachine) {
         super(vendingMachine);
     }
@@ -33,6 +36,7 @@ public class DispenseState extends State {
     public Product dispenseProduct(String code) {
         List<Product> products = vendingMachine.getListOfProducts(code);
         Product vendProduct = dispenseMode.dispenseSelectedProduct(products,code);
+//        vendingMachine.getCoinParser()
         vendingMachine.setMachineState(vendingMachine.getNoCoinInsertedState());
         return vendProduct;
     }
